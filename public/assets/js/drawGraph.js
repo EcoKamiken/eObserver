@@ -62,6 +62,7 @@ let drawGraph = function (name, id, jsonData) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      events: ['click'],
       title: {
         display: true,
         position: "top",

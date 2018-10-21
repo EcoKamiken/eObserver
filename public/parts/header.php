@@ -11,6 +11,9 @@
 
   <!-- CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
+  <!-- pickadate -->
+  <link rel="stylesheet" href="/assets/pickadate/lib/themes/classic.css" id="theme_base">
+  <link rel="stylesheet" href="/assets/pickadate/lib/themes/classic.date.css" id="theme_date">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 

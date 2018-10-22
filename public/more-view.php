@@ -3,9 +3,18 @@
   include '../core/mysql.php';
   include '../core/functions.php';
 
-  $day = $_GET["day"];
-  $month = date('m', strtotime("$day", time()));
-  $tommorow = date('Y-m-d', strtotime("$day +1 day", time()));
+  $_POST = sethtmlspecialchars($_POST);
+  $today = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
+  if(!isset($today)) {
+    $today = date("Y-m-d");
+  }
+  $month = date('m', strtotime("$today", time()));
+  $tommorow = date("Y-m-d", strtotime("$today +1 day", time()));
+
+  echo $_POST['site_id'];
+  echo $_POST['today'];
+  echo $today;
+  echo $tommorow;
 ?>
 
   <h1 class="subtitle"><?php echo $day ?>のデータ</h1>

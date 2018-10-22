@@ -49,7 +49,7 @@ let drawGraph = function (name, id, jsonData) {
           pointRadius: 0
         },
         {
-          label: "発電量[kW]",
+          label: "発電量[kWh]",
           fill: true,
           borderColor: "#84ff84",
           backgroundColor: "#84ff8488",

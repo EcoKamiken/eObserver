@@ -1,0 +1,23 @@
+{
+  "name": "observer",
+  "version": "1.0.0",
+  "description": "- Raspberry Pi 3\r - DHT11\r - INA260\r - CTT-24-CLS-CV-250A",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "browser-sync start --proxy http://lain --files \"**/*\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ecokamiken/eobserver.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ecokamiken/eobserver/issues"
+  },
+  "homepage": "https://github.com/ecokamiken/eobserver#readme",
+  "devDependencies": {
+    "browser-sync": "^2.26.3"
+  }
+}

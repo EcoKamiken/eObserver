@@ -1,12 +1,16 @@
 <?php
   include 'parts/header.php';
-  include 'parts/date_picker.php';
   include '../core/mysql.php';
   include '../core/functions.php';
 
-  $today = date("Y-m-d");
+  $_POST = sethtmlspecialchars($_POST);
+  $today = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
+  if(!isset($today)) {
+    $today = date("Y-m-d");
+  }
   $tommorow = date("Y-m-d", strtotime("$today +1 day", time()));
-  // TODO: POSTの内容に応じて日付を変更する処理を書く
+
+  include 'parts/date_picker.php';
 ?>
 
   <main class="layout">
@@ -19,11 +23,9 @@
   foreach($sites as $row) {
 ?>
     <a href="more-view.php?id=<?php echo $row['id']; ?>&day=<?php echo $today; ?>">
-      <div class="screen">
-        <section class='chartContainer'>
-          <canvas id='<?php echo $row['id']; ?>'></canvas>
-        </section>
-      </div>
+      <section class='chartContainer'>
+        <canvas id='<?php echo $row['id']; ?>'></canvas>
+      </section>
     </a>
 <?php
   }
@@ -37,6 +39,7 @@
   // データを取得して、mainの中で生成したキャンバスにグラフを描画する。
   // FIXME: 上と同様の理由でループで処理するのがあまり直観的ではないと思うので、違う書き方がないか検討する
   $pdo = get_pdo();
+  // FIXME: device_id = 1を実際の運用では0にする
   foreach($sites as $row) {
     $sql = "
     select 
@@ -49,6 +52,7 @@
     where
         created_at between :today and :tommorow
         and id = :id
+        and device_id = 1
     group by
         times; 
     ";

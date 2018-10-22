@@ -7,7 +7,6 @@ let date_filter = function (date) {
 };
 
 let drawGraph = function (name, id, jsonData) {
-  console.log(jsonData);
   // name: 発電所名
   // id  : 発電所ID (Unique)
   // jsonData: 温度などのデータをjson形式で記述したもの
@@ -23,7 +22,6 @@ let drawGraph = function (name, id, jsonData) {
     humidity.push(value.humidity);
     wattage.push(value.wattage);
   });
-  console.log(date);
 
   var ctx = document.getElementById(id).getContext("2d");
   var chart = new Chart(ctx, {

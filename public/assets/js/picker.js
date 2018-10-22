@@ -1,3 +1,3 @@
-$('#date_box').pickadate({
-  format: 'yyyy/mm/dd'
+$(function() {
+  $('#date_box').pickadate();
 });

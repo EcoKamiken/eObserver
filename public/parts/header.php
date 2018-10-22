@@ -12,8 +12,9 @@
   <!-- CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
   <!-- pickadate -->
-  <link rel="stylesheet" href="/assets/pickadate/lib/themes/default.css" id="theme_base">
-  <link rel="stylesheet" href="/assets/pickadate/lib/themes/default.date.css" id="theme_date">
+  <link rel="stylesheet" href="/assets/pickadate/lib/compressed/themes/default.css">
+  <link rel="stylesheet" href="/assets/pickadate/lib/compressed/themes/default.date.css">
+  <link rel="stylesheet" href="/assets/pickadate/lib/compressed/themes/default.time.css">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 

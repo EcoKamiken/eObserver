@@ -11,31 +11,36 @@
   $month = date('m', strtotime("$today", time()));
   $tommorow = date("Y-m-d", strtotime("$today +1 day", time()));
 
-  echo $_POST['site_id'];
-  echo $_POST['today'];
-  echo $today;
-  echo $tommorow;
+  include 'parts/date_picker.php';
 ?>
 
-  <h1 class="subtitle"><?php echo $day ?>のデータ</h1>
   <main>
-
-<?php
-  
-?>
-
-    <table width="100%" cellspacing="0" cellpadding="0" bordercolor="#fff">
-      <tr>
-        <td>本日の発電量</td>
-        <td><?php echo $today ?>kWh</td>
-      </tr>
-      <tr>
-        <td><?php echo $month ?>月の発電量</td>
-        <td><?php echo $total ?>kWh</td>
-      </tr>
-    </table>
+    <div class="card device_list">
+      <ul>
+        <li><a href="#">デバイス0</a></li>
+        <li><a href="#">デバイス1</a></li>
+        <li><a href="#">デバイス2</a></li>
+      </ul>
+    </div>
+    <div class="card moreChartContainer">
+      <canvas id="chart"></canvas>
+    </div>
+    <div class="card detail">
+      <table>
+        <tr>
+          <td>本日の発電量</td>
+          <td>10kWh</td>
+        </tr>
+        <tr>
+          <td>今月の発電量</td>
+          <td>100kWh</td>
+        </tr>
+      </table>
+    </div>
   </main>
 
+
+
 <?php
-  include '../parts/footer.php';
+  include 'parts/footer.php';
 ?>

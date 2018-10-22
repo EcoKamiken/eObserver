@@ -65,13 +65,14 @@ header img {
 
 .picker_field {
     position: relative;
-    background-color: snow;
+    background-color: #f8f9fa;
 }
 
 .picker_field p {
     position: absolute;
     top: 30%;
     left: 2%;
+    color: #555;
     font-size: 1.4rem;
     align-items: stretch;
     flex-grow: 1;
@@ -84,8 +85,8 @@ form {
 
 .input_area {
     position: absolute;
-    top: 15%;
-    right: 2%;
+    top: 10%;
+    right: 7px;
     display: inline-block;
     padding: 0;
 }
@@ -156,24 +157,57 @@ footer p {
     transition: 100ms;
 }
 
-.moreChartContainer {
-    height: 400px;
-    margin-bottom: 10px;
-    background-color: white;
-    filter: drop-shadow(2px 2px 2px #d6ddf0);
-    transition: 100ms;
-}
 
 .detail {
     font-family: sans-serif;
     filter: drop-shadow(2px 2px 2px #d6ddf0);
     padding: 10px;
-    margin-bottom: 5px;
+    color: black;
+    background-color: white;
+    font-size: 1.2rem;
+    min-width: 300px;
+    flex: 1;
+}
+
+.detail p {
+    font-size: 1.2rem;
+}
+
+.card {
+    filter: drop-shadow(2px 2px 2px #d6ddf0);
     color: black;
     background-color: white;
     font-size: 1.2rem;
 }
 
-.detail p {
-    font-size: 1.2rem;
+main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.device_list {
+    min-width: 100px;
+}
+
+.device_list a {
+    width: 100%;
+    text-decoration: none;
+    color: #333;
+}
+
+.device_list li {
+    padding: 2px 10px;
+    font-size: 1.0rem;
+    width: 100%;
+    transition: 200ms;
+}
+
+.device_list li:hover {
+    background-color: #ccc;
+    transition: 200ms;
+}
+
+.moreChartContainer {
+    flex: 1;
+    background-color: white;
 }

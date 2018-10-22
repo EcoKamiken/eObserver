@@ -12,6 +12,7 @@
   <script src="/assets/pickadate/lib/picker.date.js"></script>
   <script src="/assets/pickadate/lib/picker.time.js"></script>
   <script src="/assets/pickadate/lib/legacy.js"></script>
+  <script src="/assets/pickadate/lib/translations/ja_JP.js"></script>
   <script src="/assets/js/picker.js"></script>
 </body>
 </html>

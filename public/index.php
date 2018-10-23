@@ -22,7 +22,7 @@
   $sites = get_array($sql);
   foreach($sites as $row) {
 ?>
-    <a href="more-view.php?id=<?php echo $row['id']; ?>&day=<?php echo $today; ?>">
+    <a href="more-view.php?id=<?php echo $row['id']; ?>&today=<?php echo $today; ?>">
       <section class='chartContainer'>
         <canvas id='<?php echo $row['id']; ?>'></canvas>
       </section>

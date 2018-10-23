@@ -158,21 +158,6 @@ footer p {
 }
 
 
-.detail {
-    font-family: sans-serif;
-    filter: drop-shadow(2px 2px 2px #d6ddf0);
-    padding: 10px;
-    color: black;
-    background-color: white;
-    font-size: 1.2rem;
-    min-width: 300px;
-    flex: 1;
-}
-
-.detail p {
-    font-size: 1.2rem;
-}
-
 .card {
     filter: drop-shadow(2px 2px 2px #d6ddf0);
     color: black;
@@ -210,4 +195,48 @@ main {
 .moreChartContainer {
     flex: 1;
     background-color: white;
+}
+
+.detail {
+    font-family: sans-serif;
+    font-size: 1.2rem;
+    min-width: 300px;
+}
+
+.detail h1 {
+    padding: 5px;
+}
+
+.detail p {
+    font-size: 1.2rem;
+}
+
+table {
+    padding: 5px;
+    border-collapse: separate;
+    border-spacing: 28px 8px;
+    width: 100%;
+}
+
+td {
+    text-align: right;
+}
+
+th {
+    width: 70%;
+    font-size: 1.2rem;
+    color: #333;
+    text-align: left
+}
+
+hr {
+    border: 0; 
+    height: 1px; 
+}
+
+.title {
+    padding: 10px 0 10px 0;
+    font-size: 1.2rem;
+    text-align: center;
+    color:  #333;
 }

@@ -244,3 +244,10 @@ hr {
     text-align: center;
     color:  #333;
 }
+
+.sub_btn span {
+    position: absolute;
+    font-size: 30px;
+    top: -3px;
+    left: 16px;
+}

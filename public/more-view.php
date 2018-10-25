@@ -5,7 +5,8 @@
 
   $_POST = sethtmlspecialchars($_POST);
   $today = filter_input(INPUT_GET, 'today', FILTER_SANITIZE_STRING);
-  //FIXME: このページで日付をPOSTしても受け取れてない（処理を書いてない）
+  $today = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
+  //FIXME: 動くだけ
   if(!isset($today)) {
     $today = date("Y-m-d");
   }
@@ -69,6 +70,7 @@
     $stmt->bindValue(':device_id', (int)$device_id, PDO::PARAM_INT);
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+  }
 ?>
 
   </main>
@@ -103,18 +105,16 @@
 
     $sql = "
     select
-      from_unixtime(round(unix_timestamp(created_at) div (10 * 60)) * (10 * 60)) as times,
-      round(sum(temperature)/count(*), 0) as temperature,
-      round(sum(humidity)/count(*), 0) as humidity,
-      round(sum(wattage)/count(*), 2) as wattage
+      created_at as times,
+      temperature,
+      humidity,
+      round(wattage, 2) as wattage
     from
         sensors
     where
         created_at between :today and :tommorow
         and id = :id
         and device_id = :device_id
-    group by
-        times
     ";
 
     $stmt = $pdo->prepare($sql);
@@ -128,5 +128,4 @@
     $name = "Device" . $device_id;
     echo "\n<script>drawGraph('$name', '$device_id', '$json');</script>";
   }
-}
 ?>

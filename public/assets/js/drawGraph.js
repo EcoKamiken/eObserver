@@ -60,7 +60,6 @@ let drawGraph = function (name, id, jsonData) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      events: ['click'],
       title: {
         display: true,
         position: "top",
@@ -75,7 +74,7 @@ let drawGraph = function (name, id, jsonData) {
           },
           ticks: {
             min: 0,
-            max: 80,
+            max: 100,
             stepSize: 0
           }
         }],

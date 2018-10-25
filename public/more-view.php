@@ -5,6 +5,7 @@
 
   $_POST = sethtmlspecialchars($_POST);
   $today = filter_input(INPUT_GET, 'today', FILTER_SANITIZE_STRING);
+  //FIXME: このページで日付をPOSTしても受け取れてない（処理を書いてない）
   if(!isset($today)) {
     $today = date("Y-m-d");
   }
@@ -23,6 +24,7 @@
 
   <h1 class="title card"><?php echo $sitename ?> 太陽光発電所</h1>
   <main class="layout">
+
 <?php
   $pdo = get_pdo();
   $stmt = $pdo->prepare('select name, device_qty from sites where id = :id');
@@ -38,7 +40,37 @@
 
 <?php
   }
+
+  $pdo = get_pdo();
+  $stmt = $pdo->prepare('select name, device_qty from sites where id = :id');
+  $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
+  $stmt->execute();
+  $res = $stmt->fetch();
+  foreach(range(0, $res['device_qty'] - 1) as $device_id) {
+
+    $sql = "
+      select 
+          date_format(created_at, '%Y-%m-%d %H:00:00') as times,
+          round(sum(wattage)/count(*), 2) as wattage
+      from
+          sensors
+      where
+          created_at between :today and :tommorow
+          and id = :id
+          and device_id = :device_id
+      group by
+          times; 
+    ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':today', $today.' 00:00:00', PDO::PARAM_STR);
+    $stmt->bindValue(':tommorow', $tommorow.' 00:00:00', PDO::PARAM_STR);
+    $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
+    $stmt->bindValue(':device_id', (int)$device_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 ?>
+
   </main>
 
   <div class="detail card">
@@ -48,11 +80,11 @@
       </tr>
       <tr>
         <th>本日の発電量</td>
-        <td>10kWh</td>
+        <td>dummykWh</td>
       </tr>
       <tr>
         <th>今月の発電量</td>
-        <td>100kWh</td>
+        <td>dummykWh</td>
       </tr>
     </table>
   </div>
@@ -82,9 +114,8 @@
         and id = :id
         and device_id = :device_id
     group by
-        times; 
+        times
     ";
-
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':today', $today.' 00:00:00', PDO::PARAM_STR);
@@ -97,4 +128,5 @@
     $name = "Device" . $device_id;
     echo "\n<script>drawGraph('$name', '$device_id', '$json');</script>";
   }
+}
 ?>

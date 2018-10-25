@@ -19,5 +19,6 @@
   "homepage": "https://github.com/ecokamiken/eobserver#readme",
   "devDependencies": {
     "browser-sync": "^2.26.3"
-  }
+  },
+  "dependencies": {}
 }

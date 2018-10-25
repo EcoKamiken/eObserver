@@ -39,7 +39,6 @@
   // データを取得して、mainの中で生成したキャンバスにグラフを描画する。
   // FIXME: 上と同様の理由でループで処理するのがあまり直観的ではないと思うので、違う書き方がないか検討する
   $pdo = get_pdo();
-  // FIXME: device_id = 1を実際の運用では0にする
   foreach($sites as $row) {
     $sql = "
     select 
@@ -52,7 +51,7 @@
     where
         created_at between :today and :tommorow
         and id = :id
-        and device_id = 1
+        and device_id = 0
     group by
         times; 
     ";

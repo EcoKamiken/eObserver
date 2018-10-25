@@ -103,16 +103,19 @@ button {
     height: 40px;
     width: 60px;
     font-size: 1.0rem;
-    border-radius: 0 5px 5px 0;
+    border-radius: 5px;
     background-color: #2c992c;
     border: solid 1px #ccc;
     color: white;
 }
 
 .datepicker {
+    position: absolute;
+    top: 0;
+    right: 65px;
     padding-left: 10px;
-    height: 34px;
-    width: 180px;
+    height: 36px;
+    width: 120px;
     border: 2px solid #ddd;
     font-size: 1.2rem;
 }
@@ -226,7 +229,7 @@ th {
     width: 70%;
     font-size: 1.2rem;
     color: #333;
-    text-align: left
+    text-align: left;
 }
 
 hr {

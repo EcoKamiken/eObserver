@@ -3,6 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.1-browsers
+
     steps:
       - checkout
 
@@ -13,11 +14,11 @@ jobs:
       - run:
         name: Start ssh-keyscan
         command: |
-          ssh-keyscan ${HOST_NAME} >> ~/.ssh/known_hosts
+          ssh-keyscan -p 55555 ${HOST_NAME} >> ~/.ssh/known_hosts
 
       - deploy:
         name: Start master deploy
         command: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            rsync -av --delete --exclude='.git' --exclude='.circleci' ./${USER_NAME}@${HOST_NAME}:/web/observer_release
+            rsync -av --delete --exclude='.git' --exclude='.circleci' ./ ${USER_NAME}@${HOST_NAME}:/web/observer_release
           fi

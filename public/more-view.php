@@ -85,7 +85,7 @@
       from
           sensors
       where
-          created_at between :beginning and :tommorow
+          created_at between :beginning and :end
           and id = :id
           and device_id = :device_id
       group by
@@ -94,7 +94,7 @@
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':beginning', date('Y-m').'-1'.' 00:00:00', PDO::PARAM_STR);
-    $stmt->bindValue(':tommorow', $tommorow.' 00:00:00', PDO::PARAM_STR);
+    $stmt->bindValue(':end', date('Y-m-t').' 00:00:00', PDO::PARAM_STR);
     $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
     $stmt->bindValue(':device_id', (int)$device_id, PDO::PARAM_INT);
     $stmt->execute();

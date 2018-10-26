@@ -4,11 +4,12 @@
   include '../core/functions.php';
 
   $_POST = sethtmlspecialchars($_POST);
-  $today = filter_input(INPUT_GET, 'today', FILTER_SANITIZE_STRING);
   $today = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
-  //FIXME: 動くだけ
   if(!isset($today)) {
-    $today = date("Y-m-d");
+    $today = filter_input(INPUT_GET, 'today', FILTER_SANITIZE_STRING);
+    if(!isset($today)) {
+      $today = date("Y-m-d");
+    }
   }
   $tommorow = date("Y-m-d", strtotime("$today +1 day", time()));
 

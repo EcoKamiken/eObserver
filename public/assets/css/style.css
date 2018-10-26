@@ -251,3 +251,20 @@ hr {
     top: -3px;
     left: 16px;
 }
+
+.register {
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-decoration: none;
+    color: white;
+    background-color: #4169e1;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.register_field {
+    position: relative;
+    height: 50px;
+}

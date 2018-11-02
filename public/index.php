@@ -13,9 +13,11 @@
   include 'parts/date_picker.php';
 ?>
 
+  <!--
   <div class="register_field">
     <a class="register" href="register.php">＋発電所を登録</a>
   </div>
+  -->
 
   <main class="layout">
 

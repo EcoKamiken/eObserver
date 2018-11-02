@@ -93,9 +93,10 @@
           times; 
     ";
 
+
     $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':beginning', date('Y-m').'-1'.' 00:00:00', PDO::PARAM_STR);
-    $stmt->bindValue(':end', date('Y-m-t').' 00:00:00', PDO::PARAM_STR);
+    $stmt->bindValue(':beginning', substr($today, 0, 7).'-1'.' 00:00:00', PDO::PARAM_STR);
+    $stmt->bindValue(':end', substr($today, 0, 7).date('-t').' 00:00:00', PDO::PARAM_STR);
     $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
     $stmt->bindValue(':device_id', (int)$device_id, PDO::PARAM_INT);
     $stmt->execute();

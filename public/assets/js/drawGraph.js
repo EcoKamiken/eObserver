@@ -38,15 +38,6 @@ let drawGraph = function (name, id, jsonData) {
           pointRadius: 0
         },
         {
-          label: "湿度[%]",
-          fill: false,
-          borderColor: "#8989ff",
-          backgroundColor: "#8989ff80",
-          data: humidity,
-          borderWidth: 1,
-          pointRadius: 0
-        },
-        {
           label: "発電量[kWh]",
           fill: true,
           borderColor: "#84ff84",
@@ -74,7 +65,7 @@ let drawGraph = function (name, id, jsonData) {
           },
           ticks: {
             min: 0,
-            max: 100,
+            max: 40,
             stepSize: 0
           }
         }],

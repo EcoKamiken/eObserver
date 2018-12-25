@@ -72,7 +72,7 @@
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
     $json = json_safe_encode($result);
-    echo "\n<script>drawGraph('$name', '$id', '$json');</script>";
+    echo "\n<script>drawGraph('$name', '$id', '$json', false);</script>";
     
   }
 ?>

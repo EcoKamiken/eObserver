@@ -160,6 +160,6 @@
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
     $json = json_safe_encode($result);
     $name = "Device" . $device_id;
-    echo "\n<script>drawGraph('$name', '$device_id', '$json');</script>";
+    echo "\n<script>drawGraph('$name', '$device_id', '$json', true);</script>";
   }
 ?>

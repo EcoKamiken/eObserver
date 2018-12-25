@@ -6,7 +6,7 @@ let date_filter = function (date) {
   }
 };
 
-let drawGraph = function (name, id, jsonData) {
+let drawGraph = function (name, id, jsonData, enable_tooltips) {
   // name: 発電所名
   // id  : 発電所ID (Unique)
   // jsonData: 温度などのデータをjson形式で記述したもの
@@ -90,9 +90,10 @@ let drawGraph = function (name, id, jsonData) {
         }
       },
       tooltips: {
-        enabled: true,
+        enabled: enable_tooltips,
         mode: "index",
-        intersect: false
+        intersect: false,
+        backgroundColor: 'rgba(0,0,0,0.5)'
       },
       animation: {
         duration: 0

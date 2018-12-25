@@ -27,6 +27,7 @@
   $sql = 'select id, name from sites';
   $sites = get_array($sql);
   foreach($sites as $row) {
+    if($row['id'] == 0) continue;
 ?>
     <a href="more-view.php?id=<?php echo $row['id']; ?>&today=<?php echo $today; ?>">
       <section class='chartContainer'>

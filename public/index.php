@@ -24,7 +24,7 @@
 <?php
   // sitesテーブルに登録されている案件を読み取り、グラフ表示のためのカードを生成する。
   // FIXME: Loopで処理すると直観的ではないような気がするので、他にいい書き方があれば修正する。
-  $sql = 'select id, name from sites';
+  $sql = 'select id, name, capacity from sites';
   $sites = get_array($sql);
   foreach($sites as $row) {
     if($row['id'] == 0) continue;
@@ -64,7 +64,7 @@
     ";
 
     $id = $row['id'];
-    $name = $row['name'];
+    $name = $row['name'] . " " . $row['capacity'] . "kW";
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':today', $today.' 00:00:00', PDO::PARAM_STR);

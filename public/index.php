@@ -24,7 +24,7 @@
 <?php
   // sitesテーブルに登録されている案件を読み取り、グラフ表示のためのカードを生成する。
   // FIXME: Loopで処理すると直観的ではないような気がするので、他にいい書き方があれば修正する。
-  $sql = 'select id, name, capacity from sites';
+  $sql = 'select id, name, capacity from sites ORDER BY grp, serial_number'; #     SQL ANTI PATTERN
   $sites = get_array($sql);
   foreach($sites as $row) {
     if($row['id'] == 0) continue;

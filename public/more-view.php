@@ -51,6 +51,7 @@
 
   $today_wattage = 0;
   $month_wattage = 0;
+  $year_wattage = 0;
   foreach(range(0, $res['device_qty'] - 1) as $device_id) {
 
     $sql = "
@@ -104,6 +105,31 @@
     foreach($result as $value) {
       $month_wattage += (float)$value['wattage'];
     }
+
+    $sql = "
+      select 
+          date_format(created_at, '%Y-%m-%d %H:00:00') as times,
+          round(sum(wattage)/count(*), 2) as wattage
+      from
+          sensors
+      where
+          created_at between :begin and :end
+          and id = :id
+          and device_id = :device_id
+      group by
+          times; 
+    ";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':begin', substr($today, 0, 4).'-01-01 '.' 00:00:00', PDO::PARAM_STR);
+    $stmt->bindValue(':end', substr($today, 0, 4).'-12-31'.' 00:00:00', PDO::PARAM_STR);
+    $stmt->bindValue(':id', (int)$id, PDO::PARAM_INT);
+    $stmt->bindValue(':device_id', (int)$device_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    foreach($result as $value) {
+      $year_wattage += (float)$value['wattage'];
+    }
   }
 ?>
 
@@ -116,11 +142,15 @@
       </tr>
       <tr>
         <th>本日の発電量</td>
-        <td><?php echo $today_wattage; ?>[kWh]</td>
+        <td><?php echo round($today_wattage, 2); ?>[kWh]</td>
       </tr>
       <tr>
         <th>今月の発電量</td>
-        <td><?php echo $month_wattage; ?>[kWh]</td>
+        <td><?php echo round($month_wattage, 2); ?>[kWh]</td>
+      </tr>
+      <tr>
+        <th>今年の発電量</td>
+        <td><?php echo round($year_wattage, 2); ?>[kWh]</td>
       </tr>
     </table>
   </div>

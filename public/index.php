@@ -48,7 +48,7 @@
   $pdo = get_pdo();
   foreach($sites as $row) {
     $sql = "
-    select 
+    select
         date_format(created_at, '%Y-%m-%d %H:00:00') as times,
         round(sum(temperature)/count(*), 0) as temperature,
         round(sum(humidity)/count(*), 0) as humidity,
@@ -60,11 +60,11 @@
         and id = :id
         and device_id = 0
     group by
-        times; 
+        times;
     ";
 
     $id = $row['id'];
-    $name = $row['name'] . " " . $row['capacity'] . "kW";
+    $name = $row['name'] . " " . $row['capacity'] . "kW" . " " . $id;
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':today', $today.' 00:00:00', PDO::PARAM_STR);
@@ -74,6 +74,5 @@
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
     $json = json_safe_encode($result);
     echo "\n<script>drawGraph('$name', '$id', '$json', false);</script>";
-    
   }
 ?>

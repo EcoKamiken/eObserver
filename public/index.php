@@ -71,7 +71,7 @@
     $stmt->bindValue(':tommorow', $tommorow.' 00:00:00', PDO::PARAM_STR);
     $stmt->bindValue(':id', (int)$row['id'], PDO::PARAM_INT);
     $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $json = json_safe_encode($result);
     echo "\n<script>drawGraph('$name', '$id', '$json', false);</script>";
   }

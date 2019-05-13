@@ -170,7 +170,7 @@
 
     $sql = "
     select
-      from_unixtime(round(unix_timestamp(created_at) div (10 * 60)) * (10 * 60)) as times,
+      created_at as times,
       temperature,
       humidity,
       round(wattage, 2) as wattage
@@ -180,8 +180,6 @@
       created_at between :today and :tommorow
       and id = :id
       and device_id = :device_id
-    group by
-      times
     ";
 
     $stmt = $pdo->prepare($sql);

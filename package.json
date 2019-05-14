@@ -4,8 +4,8 @@
   "description": "- Raspberry Pi 3\r - DHT11\r - INA260\r - CTT-24-CLS-CV-250A",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "browser-sync start --proxy http://localhost:3000 --files \"**/*\""
+    "devel": "php -S localhost:3000 -t public",
+    "sync": "browser-sync start --proxy http://localhost:3000 --files \"**/*\""
   },
   "repository": {
     "type": "git",

@@ -65,7 +65,6 @@ let drawGraph = function (name, id, jsonData, enable_tooltips) {
           },
           ticks: {
             min: 0,
-            max: 80,
             stepSize: 0
           }
         }],

@@ -18,7 +18,7 @@ include 'parts/date_picker.php';
 <?php
 
 // sitesテーブルに登録されている案件を読み取り、グラフ表示のためのカードを生成する。
-$sql = 'select id, name, capacity from sites ORDER BY grp, serial_number'; #     SQL ANTI PATTERN
+$sql = 'select id, name, capacity, device_qty from sites ORDER BY grp, serial_number'; #     SQL ANTI PATTERN
 $sites = get_array($sql);
 foreach ($sites as $row) {
     if ($row['id'] == 0) {
@@ -52,21 +52,32 @@ foreach ($sites as $row) {
     where
         created_at between :today and :tommorow
         and id = :id
-        and device_id = 0
+        and device_id = :device_id
     group by
-        times;
+        times
     ";
 
-    $id = $row['id'];
-    $name = $row['name'] . " " . $row['capacity'] . "kW";
+    foreach(range(0, $row['device_qty'] - 1) as $device_id) {
+      $id = $row['id'];
+      $name = $row['name'] . " " . $row['capacity'] . "kW";
 
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':today', $today.' 00:00:00', PDO::PARAM_STR);
-    $stmt->bindValue(':tommorow', $tommorow.' 00:00:00', PDO::PARAM_STR);
-    $stmt->bindValue(':id', (int)$row['id'], PDO::PARAM_INT);
-    $stmt->execute();
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      $stmt = $pdo->prepare($sql);
+      $stmt->bindValue(':today', $today.' 00:00:00', PDO::PARAM_STR);
+      $stmt->bindValue(':tommorow', $tommorow.' 00:00:00', PDO::PARAM_STR);
+      $stmt->bindValue(':id', (int)$row['id'], PDO::PARAM_INT);
+      $stmt->bindValue(':device_id', $device_id, PDO::PARAM_INT);
+      $stmt->execute();
+      if(!$result) {
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      } else {
+        $tmp = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        for($i = 0; $i < count($result); $i++) {
+          $result[$i]['wattage'] += $tmp[$i]['wattage'];
+        }
+      }
+    }
     $json = json_safe_encode($result);
+    $result = null;
     echo "\n<script>drawGraph('$name', '$id', '$json', false);</script>";
 }
 ?>

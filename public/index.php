@@ -58,7 +58,7 @@ foreach ($sites as $row) {
     ";
 
     $id = $row['id'];
-    $name = $row['name'] . " " . $row['capacity'] . "kW" . " " . $id;
+    $name = $row['name'] . " " . $row['capacity'] . "kW";
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':today', $today.' 00:00:00', PDO::PARAM_STR);

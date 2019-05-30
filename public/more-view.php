@@ -188,7 +188,7 @@ foreach (range(0, $res['device_qty'] - 1) as $device_id) {
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $json = json_safe_encode($result);
-    $name = "Device" . $device_id;
+    $name = "PCS " . ($device_id + 1);
     echo "\n<script>drawGraph('$name', '$device_id', '$json', true);</script>";
 }
 ?>

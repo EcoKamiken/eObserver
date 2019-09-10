@@ -61,7 +61,6 @@ typings/
 .next
 
 sql.py
-core/mysql.php
 Thumbs.db
 .DS_Store
 .vscode

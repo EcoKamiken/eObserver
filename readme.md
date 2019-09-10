@@ -1,14 +1,14 @@
-# Observer
+# eobserver
 
-## 必要な機材
+## Getting started
 
-- Raspberry Pi 3
-- DHT11
-- INA260
-- CTT-24-CLS-CV-250A
+```
+export OBS_DB_HOST="127.0.0.1:3306"
+export OBS_DB_NANE="database_name"
+export OBS_DB_USER="username"
+export OBS_DB_PASS="password"
 
-## 準備
-
-1. 各種設定済みの SD カードを用意する
-2. k/config.ini 内の place の値を案件名に変更する
-3. web/thermometer/(thermometer|wattage)/現場名/inserted ディレクトリを作成する。
+git clone https://github.com/ecokamiken/eobserver
+cd eobserver
+php -S 127.0.0.1:3000 -t public
+```

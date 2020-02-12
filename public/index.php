@@ -18,8 +18,9 @@ include 'parts/date_picker.php';
 <?php
 
 // sitesテーブルに登録されている案件を読み取り、グラフ表示のためのカードを生成する。
-$sql = 'select id, name, capacity, device_qty from sites ORDER BY grp, serial_number'; #     SQL ANTI PATTERN
+$sql = 'select id, name, capacity, device_qty from sites ORDER BY grp, serial_number';
 $sites = get_array($sql);
+echo $sites;
 foreach ($sites as $row) {
     if ($row['id'] == 0) {
         continue;

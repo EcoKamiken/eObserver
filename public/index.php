@@ -3,13 +3,11 @@
 require('../core/database.php');
 require('../core/functions.php');
 require('../core/common.php');
-
-include('parts/header.php');
+require('parts/header.php');
+require('parts/datepicker.php');
 
 $sanitized_post = escape_special_characters($_POST);
 $date = new common\Date();
-
-require('parts/datepicker.php');
 ?>
 
   <main class="layout">
@@ -17,26 +15,40 @@ require('parts/datepicker.php');
 <?php
 
 // sitesテーブルに登録されている案件を読み取り、グラフ表示のためのカードを生成する。
-$sql = 'select id, name, capacity, device_qty from sites ORDER BY grp, serial_number';
-$sites = get_array($sql);
-echo $sites;
-foreach ($sites as $row) {
-    if ($row['id'] == 0) {
-        continue;
-    }
+$sql =<<<__LONG_STRRING__
+SELECT
+  id, name, capacity, machine_type
+FROM
+  sites
+ORDER BY
+  grp, serial_number
+__LONG_STRRING__;
+
+$connection = new Database\Database();
+$stmt = $connection->dbh->query($sql);
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC|PDO::FETCH_UNIQUE);
+?>
+
+<!-- foreach begin -->
+<?php
+foreach ($rows as $row) {
     ?>
-    <a href="more-view.php?id=<?php echo $row['id']; ?>&today=<?php echo $today; ?>">
+
+    <a href="detail.php?id=<?php echo $row['id']; ?>&today=<?php echo $date->begin_date; ?>">
       <section class='chartContainer'>
         <canvas id='<?php echo $row['id']; ?>'></canvas>
       </section>
     </a>
+
     <?php
 }
-?>
+?><!-- foreach end -->
+
   </main>
 
 <?php
-include 'parts/footer.php';
+
+require('parts/footer.php');
 
 // データを取得して、mainの中で生成したキャンバスにグラフを描画する。
 /*

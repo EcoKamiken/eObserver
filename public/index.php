@@ -2,10 +2,11 @@
 
 require('../core/database.php');
 require('../core/functions.php');
-require('../core/common.php');
+require('../core/date.php');
+require('../core/graph.php');
 
 $sanitized_post = escape_special_characters($_POST);
-$date = new common\Date();
+$date = new Common\Date();
 
 require('parts/header.php');
 require('parts/datepicker.php');
@@ -18,7 +19,7 @@ require('parts/datepicker.php');
 
 $sql = "
 SELECT
-  id, name, capacity, machine_type
+  id, name, capacity, machine_type, is_visible
 FROM
   sites
 ORDER BY
@@ -33,6 +34,10 @@ $sites = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <!-- foreach begin -->
 <?php
 foreach ($sites as $row) {
+    // is_visibleが0の場合はスキップする
+    if ($row['is_visible'] == 0) {
+        continue;
+    }
     ?>
 
     <a href="detail.php?id=<?php echo $row['id']; ?>&today=<?php echo $date->begin_date; ?>">
@@ -53,6 +58,8 @@ require('parts/footer.php');
 
 // データを取得して、mainの中で生成したキャンバスにグラフを描画する。
 foreach ($sites as $row) {
+    $graph = new Common\Graph;
+
     $sql = "
     select
         date_format(created_at, '%Y-%m-%d %H:00:00') as c_at,
@@ -73,11 +80,10 @@ foreach ($sites as $row) {
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $name = $row['name'] . " " . $row['capacity'] . "kW";
-    $id = $row['id'];
+    $graph->title = $row['name'] . " " . $row['capacity'] . "kW";
+    $graph->id = $row['id'];
+    $graph->json = json_safe_encode($result);
 
-    $json = json_safe_encode($result);
-    $result = null;
-    echo "\n<script>drawGraph('$name', '$id', '$json', false);</script>";
+    echo "\n<script>drawGraph('$graph->title', '$graph->id', '$graph->json', false);</script>";
 }
 ?>

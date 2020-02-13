@@ -3,18 +3,19 @@
 require('../core/database.php');
 require('../core/functions.php');
 require('../core/common.php');
-require('parts/header.php');
-require('parts/datepicker.php');
 
 $sanitized_post = escape_special_characters($_POST);
 $date = new common\Date();
+
+require('parts/header.php');
+require('parts/datepicker.php');
+
 ?>
 
   <main class="layout">
 
 <?php
 
-// sitesテーブルに登録されている案件を読み取り、グラフ表示のためのカードを生成する。
 $sql =<<<__LONG_STRRING__
 SELECT
   id, name, capacity, machine_type
@@ -26,8 +27,9 @@ __LONG_STRRING__;
 
 $connection = new Database\Database();
 $stmt = $connection->dbh->query($sql);
-$rows = $stmt->fetchAll(PDO::FETCH_ASSOC|PDO::FETCH_UNIQUE);
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 
 <!-- foreach begin -->
 <?php

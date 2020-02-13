@@ -1,18 +1,8 @@
 <?php
 
 require('../core/database.php');
-require('../core/functions.php');
 
-$data = [
-    'a' => '<script>',
-    'b' => 'alert();',
-    'c' => '</script>'
-];
-
-$json_data = json_safe_encode($data);
-
-print($json_data);
-
-$connection = new Database();
+$connection = new Database\Database();
 $stmt = $connection->dbh->query('SELECT * from sites');
-print($stmt->fetch());
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC|PDO::FETCH_UNIQUE);
+var_dump($rows);

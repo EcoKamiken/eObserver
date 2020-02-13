@@ -1,83 +1,89 @@
 <?php
-include 'parts/header.php';
-include '../core/mysql.php';
-include '../core/functions.php';
 
-$_POST = sethtmlspecialchars($_POST);
-$today = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
-if (!isset($today)) {
-    $today = date("Y-m-d");
-}
-$tommorow = date("Y-m-d", strtotime("$today +1 day", time()));
+require('../core/database.php');
+require('../core/functions.php');
+require('../core/date.php');
+require('../core/graph.php');
 
-include 'parts/date_picker.php';
+$sanitized_post = escape_special_characters($_POST);
+$date = new Common\Date();
+
+require('parts/header.php');
+require('parts/datepicker.php');
+
 ?>
 
   <main class="layout">
 
 <?php
 
-// sitesテーブルに登録されている案件を読み取り、グラフ表示のためのカードを生成する。
-$sql = 'select id, name, capacity, device_qty from sites ORDER BY grp, serial_number'; #     SQL ANTI PATTERN
-$sites = get_array($sql);
+$sql = "
+SELECT
+  id, name, capacity, machine_type, is_visible
+FROM
+  sites
+ORDER BY
+  grp, serial_number
+";
+
+$connection = new Database\Database();
+$stmt = $connection->dbh->query($sql);
+$sites = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<!-- foreach begin -->
+<?php
 foreach ($sites as $row) {
-    if ($row['id'] == 0) {
+    // is_visibleが0の場合はスキップする
+    if ($row['is_visible'] == 0) {
         continue;
     }
     ?>
-    <a href="more-view.php?id=<?php echo $row['id']; ?>&today=<?php echo $today; ?>">
+
+    <a href="detail.php?id=<?php echo $row['id']; ?>&today=<?php echo $date->begin_date; ?>">
       <section class='chartContainer'>
         <canvas id='<?php echo $row['id']; ?>'></canvas>
       </section>
     </a>
+
     <?php
 }
-?>
+?><!-- foreach end -->
+
   </main>
 
 <?php
-include 'parts/footer.php';
+
+require('parts/footer.php');
 
 // データを取得して、mainの中で生成したキャンバスにグラフを描画する。
-$pdo = get_pdo();
 foreach ($sites as $row) {
+    $graph = new Common\Graph;
+
     $sql = "
     select
-        date_format(created_at, '%Y-%m-%d %H:00:00') as times,
-        round(sum(temperature)/count(*), 0) as temperature,
-        round(sum(humidity)/count(*), 0) as humidity,
-        round(sum(wattage)/count(*), 2) as wattage
+        date_format(created_at, '%Y-%m-%d %H:00:00') as c_at,
+        round(sum(wattage)/count(*), 2) as w_avg
     from
         sensors
     where
-        created_at between :today and :tommorow
+        created_at between :begin_date and :end_date
         and id = :id
-        and device_id = :device_id
     group by
-        times
+        c_at
     ";
 
-    foreach(range(0, $row['device_qty'] - 1) as $device_id) {
-      $id = $row['id'];
-      $name = $row['name'] . " " . $row['capacity'] . "kW";
+    $stmt = $connection->dbh->prepare($sql);
+    $stmt->bindValue(':begin_date', $date->begin_date.' 00:00:00', PDO::PARAM_STR);
+    $stmt->bindValue(':end_date', $date->end_date.' 00:00:00', PDO::PARAM_STR);
+    $stmt->bindValue(':id', (int)$row['id'], PDO::PARAM_INT);
+    $stmt->execute();
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-      $stmt = $pdo->prepare($sql);
-      $stmt->bindValue(':today', $today.' 00:00:00', PDO::PARAM_STR);
-      $stmt->bindValue(':tommorow', $tommorow.' 00:00:00', PDO::PARAM_STR);
-      $stmt->bindValue(':id', (int)$row['id'], PDO::PARAM_INT);
-      $stmt->bindValue(':device_id', $device_id, PDO::PARAM_INT);
-      $stmt->execute();
-      if(!$result) {
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      } else {
-        $tmp = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        for($i = 0; $i < count($result); $i++) {
-          $result[$i]['wattage'] += $tmp[$i]['wattage'];
-        }
-      }
-    }
-    $json = json_safe_encode($result);
-    $result = null;
-    echo "\n<script>drawGraph('$name', '$id', '$json', false);</script>";
+    $graph->title = $row['name'] . " " . $row['capacity'] . "kW";
+    $graph->id = $row['id'];
+    $graph->json = json_safe_encode($result);
+
+    echo "\n<script>drawGraph('$graph->title', '$graph->id', '$graph->json', false);</script>";
 }
 ?>

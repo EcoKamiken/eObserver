@@ -12,15 +12,13 @@ let drawGraph = function (name, id, jsonData, enable_tooltips) {
   // jsonData: 温度などのデータをjson形式で記述したもの
   jsonData = JSON.parse(jsonData);
   var date = [];
-  var temperature = [];
-  var humidity = [];
   var wattage = [];
 
+  console.log(jsonData);
+
   jsonData.forEach(value => {
-    date.push(value.times);
-    temperature.push(value.temperature);
-    humidity.push(value.humidity);
-    wattage.push(value.wattage);
+    date.push(value.c_at);
+    wattage.push(value.w_avg);
   });
 
   var ctx = document.getElementById(id).getContext("2d");
@@ -28,15 +26,7 @@ let drawGraph = function (name, id, jsonData, enable_tooltips) {
     type: "line",
     data: {
       labels: date,
-      datasets: [{
-          label: "温度[℃]",
-          fill: false,
-          borderColor: "#ff8989",
-          backgroundColor: "#ff898980",
-          data: temperature,
-          borderWidth: 1,
-          pointRadius: 0
-        },
+      datasets: [
         {
           label: "発電量[kWh]",
           fill: true,

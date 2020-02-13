@@ -1,15 +1,23 @@
 <?php
 
+namespace Database;
+
+use \PDO;
+
 class Database
 {
     public $dbh;
 
     public function __construct()
     {
-        $this->dbh = $this->getDatabaseHandler();
+        self::setDatabaseHandler();
     }
 
-    private function getDatabaseHandler()
+    /**
+     * クラス変数$dbhにDBへの接続情報を設定する。
+     * 接続情報は環境変数から取得する。
+     */
+    private function setDatabaseHandler()
     {
         $DB_HOST = getenv('OBS_DB_HOST');
         $DB_NAME = getenv('OBS_DB_NAME');
@@ -18,10 +26,8 @@ class Database
 
         try {
             $dsn = sprintf("mysql:host=%s;dbname=%s", $DB_HOST, $DB_NAME);
-            print($dsn);
-            $dbh = new PDO($dsn, $DB_USER, $DB_PASS);
-            $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            return $dbh;
+            $this->dbh = new PDO($dsn, $DB_USER, $DB_PASS);
+            $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             exit($e->getMessage());
         }

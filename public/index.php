@@ -1,16 +1,15 @@
 <?php
-include 'parts/header.php';
-include '../core/mysql.php';
-include '../core/functions.php';
 
-$_POST = sethtmlspecialchars($_POST);
-$today = filter_input(INPUT_POST, 'date', FILTER_SANITIZE_STRING);
-if (!isset($today)) {
-    $today = date("Y-m-d");
-}
-$tommorow = date("Y-m-d", strtotime("$today +1 day", time()));
+require('../core/database.php');
+require('../core/functions.php');
+require('../core/common.php');
 
-include 'parts/date_picker.php';
+include('parts/header.php');
+
+$sanitized_post = escape_special_characters($_POST);
+$date = new common\Date();
+
+require('parts/datepicker.php');
 ?>
 
   <main class="layout">
@@ -40,6 +39,7 @@ foreach ($sites as $row) {
 include 'parts/footer.php';
 
 // データを取得して、mainの中で生成したキャンバスにグラフを描画する。
+/*
 $pdo = get_pdo();
 foreach ($sites as $row) {
     $sql = "
@@ -81,4 +81,5 @@ foreach ($sites as $row) {
     $result = null;
     echo "\n<script>drawGraph('$name', '$id', '$json', false);</script>";
 }
+*/
 ?>
